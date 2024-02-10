@@ -1,6 +1,6 @@
 <?php
 require_once("includes/header.php");
-require_once ("includes/FacebookLogin.php");
+
 
 
 $the_message= "";
@@ -27,15 +27,15 @@ if(isset($_POST['submit'])){
     $username="";
     $password="";
 }
+// Include FacebookAuth class and config file
+require_once 'includes/config.php';
+require_once 'includes/FacebookAuth.php';
 
-$facebookLogin = new FacebookLogin('910771130544401', 'daa9d6ab33a59225dd1ef8b81b7ca332');
-$redirectUrl = 'http://localhost/newblogoopklas/admin/callback.php';
-$permissions = ['email'];
+//create Facebook object
+$facebookAuth = new FacebookAuth();
 
-$loginUrl = $facebookLogin->getLoginUrl($redirectUrl, $permissions);
-header('Location: ' . $loginUrl);
-exit();
-
+//get the Facebook login URL
+$facebookLoginUrl = $facebookAuth->getAuthorizationUrl();
 
 ?>
 <div class="container-fluid">
@@ -78,10 +78,6 @@ exit();
                         up</a>.</p>
                 <p><a class="font-bold" href="auth-forgot-password.html">Forgot password?</a>.</p>
             </div>
-            <!-- Facebook Login Button -->
-            <div id="fb-root"></div>
-            <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v12.0&appId=YOUR_APP_ID&autoLogAppEvents=1" nonce="YOUR_NONCE_VALUE"></script>
-            <button onclick="window.location.href='<?php echo $loginUrl; ?>'">Login with Facebook</button>
 
         </div>
     </div>
